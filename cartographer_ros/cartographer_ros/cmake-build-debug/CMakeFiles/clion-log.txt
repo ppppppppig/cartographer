@@ -1,0 +1,20 @@
+/home/ethan/Desktop/clion-2019.2.5/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/ethan/glx/cartographer/src/cartographer_ros/cartographer_ros
+CMake Error at CMakeLists.txt:38 (find_package):
+  By not providing "Findcartographer.cmake" in CMAKE_MODULE_PATH this project
+  has asked CMake to find a package configuration file provided by
+  "cartographer", but CMake did not find one.
+
+  Could not find a package configuration file provided by "cartographer" with
+  any of the following names:
+
+    cartographerConfig.cmake
+    cartographer-config.cmake
+
+  Add the installation prefix of "cartographer" to CMAKE_PREFIX_PATH or set
+  "cartographer_DIR" to a directory containing one of the above files.  If
+  "cartographer" provides a separate development package or SDK, be sure it
+  has been installed.
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/ethan/glx/cartographer/src/cartographer_ros/cartographer_ros/cmake-build-debug/CMakeFiles/CMakeOutput.log".
