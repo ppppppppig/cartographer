@@ -36,6 +36,7 @@ proto::ProbabilityGridRangeDataInserterOptions2D
 CreateProbabilityGridRangeDataInserterOptions2D(
     common::LuaParameterDictionary* parameter_dictionary);
 
+//占据栅格的更新原理
 class ProbabilityGridRangeDataInserter2D : public RangeDataInserterInterface {
  public:
   explicit ProbabilityGridRangeDataInserter2D(

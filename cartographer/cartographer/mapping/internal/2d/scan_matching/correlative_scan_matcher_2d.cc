@@ -120,7 +120,7 @@ std::vector<DiscreteScan2D> DiscretizeScans(
       const Eigen::Vector2f translated_point =
           Eigen::Affine2f(initial_translation) * point.head<2>();
       discrete_scans.back().push_back(
-          map_limits.GetCellIndex(translated_point));
+          map_limits.GetCellIndex(translated_point));//将各个点云每个点的偏移量装入discrete_scan中
     }
   }
   return discrete_scans;

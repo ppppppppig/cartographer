@@ -32,7 +32,6 @@ proto::GridOptions2D CreateGridOptions2D(
   options.set_resolution(parameter_dictionary->GetDouble("resolution"));
   return options;
 }
-
 Grid2D::Grid2D(const MapLimits& limits, float min_correspondence_cost,
                float max_correspondence_cost)
     : limits_(limits),

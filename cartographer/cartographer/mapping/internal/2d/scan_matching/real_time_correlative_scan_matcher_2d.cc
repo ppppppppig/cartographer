@@ -78,26 +78,35 @@ double RealTimeCorrelativeScanMatcher2D::Match(
     transform::Rigid2d* pose_estimate) const {
   CHECK_NOTNULL(pose_estimate);
 
+//将点云旋转
   const Eigen::Rotation2Dd initial_rotation = initial_pose_estimate.rotation();
   const sensor::PointCloud rotated_point_cloud = sensor::TransformPointCloud(
       point_cloud,
       transform::Rigid3f::Rotation(Eigen::AngleAxisf(
           initial_rotation.cast<float>().angle(), Eigen::Vector3f::UnitZ())));
+
+//设定搜索窗口的大小
   const SearchParameters search_parameters(
       options_.linear_search_window(), options_.angular_search_window(),
       rotated_point_cloud, probability_grid.limits().resolution());
 
+//根据搜索窗口产生各个角度的grid
   const std::vector<sensor::PointCloud> rotated_scans =
       GenerateRotatedScans(rotated_point_cloud, search_parameters);
+      //将grid平移一段距离，每个点的距离平移
   const std::vector<DiscreteScan2D> discrete_scans = DiscretizeScans(
       probability_grid.limits(), rotated_scans,
       Eigen::Translation2f(initial_pose_estimate.translation().x(),
                            initial_pose_estimate.translation().y()));
+
+    //根据上述信息生成candidates，candidates中包含旋转点云索引，以及x和y的偏址
   std::vector<Candidate2D> candidates =
       GenerateExhaustiveSearchCandidates(search_parameters);
+      //计算匹配得分，并取最佳
   ScoreCandidates(probability_grid, discrete_scans, search_parameters,
                   &candidates);
 
+    
   const Candidate2D& best_candidate =
       *std::max_element(candidates.begin(), candidates.end());
   *pose_estimate = transform::Rigid2d(
@@ -107,6 +116,7 @@ double RealTimeCorrelativeScanMatcher2D::Match(
   return best_candidate.score;
 }
 
+
 void RealTimeCorrelativeScanMatcher2D::ScoreCandidates(
     const ProbabilityGrid& probability_grid,
     const std::vector<DiscreteScan2D>& discrete_scans,
@@ -115,7 +125,7 @@ void RealTimeCorrelativeScanMatcher2D::ScoreCandidates(
   for (Candidate2D& candidate : *candidates) {
     candidate.score = 0.f;
     for (const Eigen::Array2i& xy_index :
-         discrete_scans[candidate.scan_index]) {
+         discrete_scans[candidate.scan_index]) {//遍历candidate的所有点云
       const Eigen::Array2i proposed_xy_index(
           xy_index.x() + candidate.x_index_offset,
           xy_index.y() + candidate.y_index_offset);

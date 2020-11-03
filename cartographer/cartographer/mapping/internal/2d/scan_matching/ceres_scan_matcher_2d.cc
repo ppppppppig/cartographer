@@ -65,10 +65,15 @@ void CeresScanMatcher2D::Match(const Eigen::Vector2d& target_translation,
                                const Grid2D& grid,
                                transform::Rigid2d* const pose_estimate,
                                ceres::Solver::Summary* const summary) const {
+    //将初值暂存
   double ceres_pose_estimate[3] = {initial_pose_estimate.translation().x(),
                                    initial_pose_estimate.translation().y(),
                                    initial_pose_estimate.rotation().angle()};
+
+
+
   ceres::Problem problem;
+  //添加三种残差计算
   CHECK_GT(options_.occupied_space_weight(), 0.);
   problem.AddResidualBlock(
       OccupiedSpaceCostFunction2D::CreateAutoDiffCostFunction(
@@ -87,6 +92,7 @@ void CeresScanMatcher2D::Match(const Eigen::Vector2d& target_translation,
           options_.rotation_weight(), ceres_pose_estimate[2]),
       nullptr /* loss function */, ceres_pose_estimate);
 
+//求解
   ceres::Solve(ceres_solver_options_, &problem, summary);
 
   *pose_estimate = transform::Rigid2d(

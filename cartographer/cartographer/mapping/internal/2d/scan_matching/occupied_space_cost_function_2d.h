@@ -56,6 +56,8 @@ class OccupiedSpaceCostFunction2D {
     ceres::BiCubicInterpolator<GridArrayAdapter> interpolator(adapter);
     const MapLimits& limits = grid_.limits();
 
+
+    //进行双三次插值，栅格点稀疏
     for (size_t i = 0; i < point_cloud_.size(); ++i) {
       // Note that this is a 2D point. The third component is a scaling factor.
       const Eigen::Matrix<T, 3, 1> point((T(point_cloud_[i].x())),

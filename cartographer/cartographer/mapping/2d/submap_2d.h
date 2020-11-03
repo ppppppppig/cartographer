@@ -73,7 +73,7 @@ class Submap2D : public Submap {
 // considered initialized: the old submap is no longer changed, the "new" submap
 // is now the "old" submap and is used for scan-to-map matching. Moreover, a
 // "new" submap gets created. The "old" submap is forgotten by this object.
-//维护多个子图，
+//永远只维护两个子图
 class ActiveSubmaps2D {
  public:
   explicit ActiveSubmaps2D(const proto::SubmapsOptions2D& options);
@@ -99,7 +99,7 @@ class ActiveSubmaps2D {
   const proto::SubmapsOptions2D options_;
   int matching_submap_index_ = 0;
   std::vector<std::shared_ptr<Submap2D>> submaps_;
-  std::unique_ptr<RangeDataInserterInterface> range_data_inserter_;
+  std::unique_ptr<RangeDataInserterInterface> range_data_inserter_;//一个插入器，通过传入插入器这种设计模式，降低耦合
 };
 
 }  // namespace mapping
