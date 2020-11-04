@@ -117,6 +117,46 @@ double RealTimeCorrelativeScanMatcher2D::Match(
 }
 
 
+double RealTimeCorrelativeScanMatcher2D::getscore(const transform::Rigid2d& pose_estimate,
+                const sensor::PointCloud& point_cloud,
+                const ProbabilityGrid& probability_grid) const{
+  //CHECK_NOTNULL(pose_estimate);
+
+//将点云旋转
+  const Eigen::Rotation2Dd rotation = pose_estimate.rotation();
+  const sensor::PointCloud rotated_point_cloud = sensor::TransformPointCloud(
+      point_cloud,
+      transform::Rigid3f::Rotation(Eigen::AngleAxisf(
+          rotation.cast<float>().angle(), Eigen::Vector3f::UnitZ())));
+
+  Eigen::Translation2f _translation = Eigen::Translation2f(pose_estimate.translation().x(),
+                                                           pose_estimate.translation().y());
+  const MapLimits& map_limits = probability_grid.limits();
+  DiscreteScan2D discrete_scan;
+  for(const Eigen::Vector3f& point : rotated_point_cloud){
+    const Eigen::Vector2f translated_point = Eigen::Affine2f(_translation) * point.head<2>();
+    //LOG(ERROR) << map_limits.GetCellIndex(translated_point);
+    discrete_scan.push_back(
+          map_limits.GetCellIndex(translated_point));
+  }
+
+  double score = 0.f;
+  for (const Eigen::Array2i& xy_index :
+    discrete_scan) {//遍历candidate的所有点云
+    const Eigen::Array2i proposed_xy_index(
+        xy_index.x() ,
+        xy_index.y());
+    const float probability =
+        probability_grid.GetProbability(proposed_xy_index);
+    score += probability;
+  }
+  score /=
+      static_cast<float>(discrete_scan.size());
+  CHECK_GT(score, 0.f);
+
+  return score;
+}
+
 void RealTimeCorrelativeScanMatcher2D::ScoreCandidates(
     const ProbabilityGrid& probability_grid,
     const std::vector<DiscreteScan2D>& discrete_scans,

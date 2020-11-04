@@ -253,7 +253,25 @@ LocalTrajectoryBuilder2D::AddAccumulatedRangeData(
     return nullptr;
   }
 
-  //double score = real_time_correlative_scan_matcher_.getscore(pose_estimate_2d,gravity_align_range_data);
+
+  sensor::AdaptiveVoxelFilter adaptive_voxel_filter(
+      options_.adaptive_voxel_filter_options());
+  const sensor::PointCloud filtered_gravity_aligned_point_cloud =
+      adaptive_voxel_filter.Filter(gravity_aligned_range_data.returns);
+  std::shared_ptr<const Submap2D> matching_submap =
+      active_submaps_.submaps().front();
+  LOG(ERROR) << real_time_correlative_scan_matcher_.getscore(*pose_estimate_2d,filtered_gravity_aligned_point_cloud,*static_cast<const ProbabilityGrid*>(matching_submap->grid()));
+  // const int MIN_SCORE = 0.8;
+  // bool do_match_full_submap = false;
+  // if(do_match_full_submap){
+  //   std::shared_ptr<const Submap2D> matching_submap =
+  //       active_submaps_.submaps().front();
+  //   double score = real_time_correlative_scan_matcher_.getscore(pose_estimate_2d,gravity_align_range_data，*static_cast<const ProbabilityGrid*>(matching_submap->grid()));
+  //   if(score < MIN_SCORE){
+  //     LOG(ERROR) << "need ?";
+  //   }
+  // }
+
 
 //将更新的pose返回给估计器
   const transform::Rigid3d pose_estimate =

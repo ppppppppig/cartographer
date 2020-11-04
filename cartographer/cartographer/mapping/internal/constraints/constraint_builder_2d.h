@@ -132,20 +132,20 @@ class ConstraintBuilder2D {
   void RunWhenDoneCallback() EXCLUDES(mutex_);
 
   const constraints::proto::ConstraintBuilderOptions options_;
-  common::ThreadPoolInterface* thread_pool_;
+  common::ThreadPoolInterface* thread_pool_;//线程池，用于并行的完成闭环检测
   common::Mutex mutex_;
 
   // 'callback' set by WhenDone().
-  std::unique_ptr<std::function<void(const Result&)>> when_done_
+  std::unique_ptr<std::function<void(const Result&)>> when_done_//通过接口whendone注册回调函数，相当于一种观察者模式
       GUARDED_BY(mutex_);
 
   // TODO(gaschler): Use atomics instead of mutex to access these counters.
   // Number of the node in reaction to which computations are currently
   // added. This is always the number of nodes seen so far, even when older
   // nodes are matched against a new submap.
-  int num_started_nodes_ GUARDED_BY(mutex_) = 0;
+  int num_started_nodes_ GUARDED_BY(mutex_) = 0;//记录当前需要考虑的节点数量
 
-  int num_finished_nodes_ GUARDED_BY(mutex_) = 0;
+  int num_finished_nodes_ GUARDED_BY(mutex_) = 0;//记录当前已完成约束计算的节点数量
 
   std::unique_ptr<common::Task> finish_node_task_ GUARDED_BY(mutex_);
 
@@ -154,10 +154,10 @@ class ConstraintBuilder2D {
   // Constraints currently being computed in the background. A deque is used to
   // keep pointers valid when adding more entries. Constraint search results
   // with below-threshold scores are also 'nullptr'.
-  std::deque<std::unique_ptr<Constraint>> constraints_ GUARDED_BY(mutex_);
+  std::deque<std::unique_ptr<Constraint>> constraints_ GUARDED_BY(mutex_);//在后台计算的约束（容器）
 
   // Map of dispatched or constructed scan matchers by 'submap_id'.
-  std::map<SubmapId, SubmapScanMatcher> submap_scan_matchers_
+  std::map<SubmapId, SubmapScanMatcher> submap_scan_matchers_//扫描匹配器的容器（扫描匹配器是什么）
       GUARDED_BY(mutex_);
 
   common::FixedRatioSampler sampler_;

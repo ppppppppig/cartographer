@@ -151,14 +151,14 @@ class PoseGraph2D : public PoseGraph {
   // Likewise, all new nodes are matched against submaps which are finished.
   enum class SubmapState { kActive, kFinished };
   struct InternalSubmapData {
-    std::shared_ptr<const Submap2D> submap;
+    std::shared_ptr<const Submap2D> submap;//记录当前点云
 
     // IDs of the nodes that were inserted into this map together with
     // constraints for them. They are not to be matched again when this submap
     // becomes 'finished'.
-    std::set<NodeId> node_ids;
+    std::set<NodeId> node_ids;//记录该点云内部所有node
 
-    SubmapState state = SubmapState::kActive;
+    SubmapState state = SubmapState::kActive;//记录状态
   };
 
   MapById<SubmapId, PoseGraphInterface::SubmapData> GetSubmapDataUnderLock()
@@ -220,42 +220,42 @@ class PoseGraph2D : public PoseGraph {
   void UpdateTrajectoryConnectivity(const Constraint& constraint)
       REQUIRES(mutex_);
 
-  const proto::PoseGraphOptions options_;
-  GlobalSlamOptimizationCallback global_slam_optimization_callback_;
+  const proto::PoseGraphOptions options_; //位姿图的各种配置
+  GlobalSlamOptimizationCallback global_slam_optimization_callback_;//完成全局优化后的回调函数
   mutable common::Mutex mutex_;
 
   // If it exists, further work items must be added to this queue, and will be
   // considered later.
-  std::unique_ptr<std::deque<std::function<void()>>> work_queue_
+  std::unique_ptr<std::deque<std::function<void()>>> work_queue_ //用于记录要完成的任务，相当于阻塞队列
       GUARDED_BY(mutex_);
 
   // How our various trajectories are related.
-  TrajectoryConnectivityState trajectory_connectivity_state_;
+  TrajectoryConnectivityState trajectory_connectivity_state_;//描述不同轨迹中的链接状态
 
   // We globally localize a fraction of the nodes from each trajectory.
   std::unordered_map<int, std::unique_ptr<common::FixedRatioSampler>>
-      global_localization_samplers_ GUARDED_BY(mutex_);
+      global_localization_samplers_ GUARDED_BY(mutex_);//不清楚
 
   // Number of nodes added since last loop closure.
-  int num_nodes_since_last_loop_closure_ GUARDED_BY(mutex_) = 0;
+  int num_nodes_since_last_loop_closure_ GUARDED_BY(mutex_) = 0;//自从上次闭环检测加入的节点
 
   // Whether the optimization has to be run before more data is added.
-  bool run_loop_closure_ GUARDED_BY(mutex_) = false;
+  bool run_loop_closure_ GUARDED_BY(mutex_) = false;//标识当前是否正在进行闭环检测
 
   // Schedules optimization (i.e. loop closure) to run.
   void DispatchOptimization() REQUIRES(mutex_);
 
   // Current optimization problem.
-  std::unique_ptr<optimization::OptimizationProblem2D> optimization_problem_;
-  constraints::ConstraintBuilder2D constraint_builder_ GUARDED_BY(mutex_);
-  std::vector<Constraint> constraints_ GUARDED_BY(mutex_);
+  std::unique_ptr<optimization::OptimizationProblem2D> optimization_problem_;//描述当前优化问题
+  constraints::ConstraintBuilder2D constraint_builder_ GUARDED_BY(mutex_);//约束构造器
+  std::vector<Constraint> constraints_ GUARDED_BY(mutex_);//记录位姿图中的所有约束
 
   // Submaps get assigned an ID and state as soon as they are seen, even
   // before they take part in the background computations.
-  MapById<SubmapId, InternalSubmapData> submap_data_ GUARDED_BY(mutex_);
+  MapById<SubmapId, InternalSubmapData> submap_data_ GUARDED_BY(mutex_);//封装一个map,记录子图数据
 
   // Data that are currently being shown.
-  MapById<NodeId, TrajectoryNode> trajectory_nodes_ GUARDED_BY(mutex_);
+  MapById<NodeId, TrajectoryNode> trajectory_nodes_ GUARDED_BY(mutex_);//记录节点数据
   int num_trajectory_nodes_ GUARDED_BY(mutex_) = 0;
 
   // Global submap poses currently used for displaying data.
@@ -264,16 +264,16 @@ class PoseGraph2D : public PoseGraph {
 
   // Global landmark poses with all observations.
   std::map<std::string /* landmark ID */, PoseGraph::LandmarkNode>
-      landmark_nodes_ GUARDED_BY(mutex_);
+      landmark_nodes_ GUARDED_BY(mutex_);//记录路标点
 
   // List of all trimmers to consult when optimizations finish.
   std::vector<std::unique_ptr<PoseGraphTrimmer>> trimmers_ GUARDED_BY(mutex_);
 
   // Set of all frozen trajectories not being optimized.
-  std::set<int> frozen_trajectories_ GUARDED_BY(mutex_);
+  std::set<int> frozen_trajectories_ GUARDED_BY(mutex_);//记录所有当前冻结的轨迹
 
   // Set of all finished trajectories.
-  std::set<int> finished_trajectories_ GUARDED_BY(mutex_);
+  std::set<int> finished_trajectories_ GUARDED_BY(mutex_);//记录已完成的轨迹
 
   // Set of all initial trajectory poses.
   std::map<int, InitialTrajectoryPose> initial_trajectory_poses_

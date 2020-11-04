@@ -105,7 +105,7 @@ class PrecomputationGridStack2D {
   int max_depth() const { return precomputation_grids_.size() - 1; }
 
  private:
-  std::vector<PrecomputationGrid2D> precomputation_grids_;
+  std::vector<PrecomputationGrid2D> precomputation_grids_;//预算图
 };
 
 // An implementation of "Real-Time Correlative Scan Matching" by Olson.

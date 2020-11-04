@@ -126,6 +126,7 @@ class Range {
 // 'SubmapId'.
 // Note: This container will only ever contain non-empty trajectories. Trimming
 // the last remaining node of a trajectory drops the trajectory.
+//类似于一个MAP的实现
 template <typename IdType, typename DataType>
 class MapById {
  private:

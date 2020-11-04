@@ -72,10 +72,13 @@ ConstraintBuilder2D::~ConstraintBuilder2D() {
   CHECK(when_done_ == nullptr);
 }
 
+//判断子图与节点之间是否有可能的约束
 void ConstraintBuilder2D::MaybeAddConstraint(
     const SubmapId& submap_id, const Submap2D* const submap,
     const NodeId& node_id, const TrajectoryNode::Data* const constant_data,
     const transform::Rigid2d& initial_relative_pose) {
+      //initial_relative_pose提供了路径节点到子图的相对位姿
+      //平移距离相差过大则直接返回
   if (initial_relative_pose.translation().norm() >
       options_.max_constraint_distance()) {
     return;
@@ -84,23 +87,35 @@ void ConstraintBuilder2D::MaybeAddConstraint(
 
   common::MutexLocker locker(&mutex_);
   if (when_done_) {
+    //检查whendone是否存在，若存在则说明上一个闭环检测还没有结束
     LOG(WARNING)
         << "MaybeAddConstraint was called while WhenDone was scheduled.";
   }
+
+  //准备向constraints_中添加约束
   constraints_.emplace_back();
   kQueueLengthMetric->Set(constraints_.size());
   auto* const constraint = &constraints_.back();
+
+  //构建一个扫描匹配器（暂时没有看如何构建）scam_matcher是由线程池完成构建的
   const auto* scan_matcher =
       DispatchScanMatcherConstruction(submap_id, submap->grid());
+
+      //构建一个线程池对象，setworkitem确定功能
   auto constraint_task = common::make_unique<common::Task>();
   constraint_task->SetWorkItem([=]() EXCLUDES(mutex_) {
     ComputeConstraint(submap_id, submap, node_id, false, /* match_full_submap */
                       constant_data, initial_relative_pose, *scan_matcher,
                       constraint);
   });
+
+  //提供依赖项，确保scan_matcher构建完成
+  //AddDependecy是通过在类中封装mutex和cond以及一个int型变量完成的
   constraint_task->AddDependency(scan_matcher->creation_task_handle);
   auto constraint_task_handle =
       thread_pool_->Schedule(std::move(constraint_task));
+
+  //通过设置依赖项的方式，必须在finish_node_task之前完成所有的月数计算
   finish_node_task_->AddDependency(constraint_task_handle);
 }
 
@@ -118,7 +133,7 @@ void ConstraintBuilder2D::MaybeAddGlobalConstraint(
   const auto* scan_matcher =
       DispatchScanMatcherConstruction(submap_id, submap->grid());
   auto constraint_task = common::make_unique<common::Task>();
-  constraint_task->SetWorkItem([=]() EXCLUDES(mutex_) {
+  constraint_task->SetWorkItem([=]() EXCLUDES(mutex_) {//match_full_submap标志位置1或0
     ComputeConstraint(submap_id, submap, node_id, true, /* match_full_submap */
                       constant_data, transform::Rigid2d::Identity(),
                       *scan_matcher, constraint);
@@ -130,6 +145,7 @@ void ConstraintBuilder2D::MaybeAddGlobalConstraint(
 }
 
 void ConstraintBuilder2D::NotifyEndOfNode() {
+  //通知constraintbuilder对象完成了一个路径节点的插入工作
   common::MutexLocker locker(&mutex_);
   CHECK(finish_node_task_ != nullptr);
   finish_node_task_->SetWorkItem([this] {
@@ -156,14 +172,22 @@ void ConstraintBuilder2D::WhenDone(
   when_done_task_ = common::make_unique<common::Task>();
 }
 
+
+//创建一个扫描匹配器
 const ConstraintBuilder2D::SubmapScanMatcher*
 ConstraintBuilder2D::DispatchScanMatcherConstruction(const SubmapId& submap_id,
                                                      const Grid2D* const grid) {
+  
+  //以前是否创建过
   if (submap_scan_matchers_.count(submap_id) != 0) {
     return &submap_scan_matchers_.at(submap_id);
   }
+
+  //将栅格传入scanmatcher中
   auto& submap_scan_matcher = submap_scan_matchers_[submap_id];
   submap_scan_matcher.grid = grid;
+
+  //构建一个分支定界发对象并加入线程池
   auto& scan_matcher_options = options_.fast_correlative_scan_matcher_options();
   auto scan_matcher_task = common::make_unique<common::Task>();
   scan_matcher_task->SetWorkItem(
@@ -178,6 +202,8 @@ ConstraintBuilder2D::DispatchScanMatcherConstruction(const SubmapId& submap_id,
   return &submap_scan_matchers_.at(submap_id);
 }
 
+
+
 void ConstraintBuilder2D::ComputeConstraint(
     const SubmapId& submap_id, const Submap2D* const submap,
     const NodeId& node_id, bool match_full_submap,
@@ -186,7 +212,7 @@ void ConstraintBuilder2D::ComputeConstraint(
     const SubmapScanMatcher& submap_scan_matcher,
     std::unique_ptr<ConstraintBuilder2D::Constraint>* constraint) {
   const transform::Rigid2d initial_pose =
-      ComputeSubmapPose(*submap) * initial_relative_pose;
+      ComputeSubmapPose(*submap) * initial_relative_pose;//在世界坐标系下的相对位置关系
 
   // The 'constraint_transform' (submap i <- node j) is computed from:
   // - a 'filtered_gravity_aligned_point_cloud' in node j,
@@ -227,11 +253,7 @@ void ConstraintBuilder2D::ComputeConstraint(
     }
   }
   
-  auto true_score = submap_scan_matcher.fast_correlative_scan_matcher->getscore();
-  if(true_score){
-    LOG(INFO) << "the true_score is " << true_score << " " << score;
-  }
-  
+  //将新获得的约束得分统计到一个直方图中
   {
     common::MutexLocker locker(&mutex_);
     score_histogram_.Add(score);
@@ -240,6 +262,7 @@ void ConstraintBuilder2D::ComputeConstraint(
   // Use the CSM estimate as both the initial and previous pose. This has the
   // effect that, in the absence of better information, we prefer the original
   // CSM estimate.
+  //通过ceres进一步对约束进行优化
   ceres::Solver::Summary unused_summary;
   ceres_scan_matcher_.Match(pose_estimate.translation(), pose_estimate,
                             constant_data->filtered_gravity_aligned_point_cloud,

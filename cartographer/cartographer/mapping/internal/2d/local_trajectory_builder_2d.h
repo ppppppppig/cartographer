@@ -117,6 +117,9 @@ class LocalTrajectoryBuilder2D {
   RangeDataCollator range_data_collator_;
 };
 
+
+
+
 }  // namespace mapping
 }  // namespace cartographer
 
