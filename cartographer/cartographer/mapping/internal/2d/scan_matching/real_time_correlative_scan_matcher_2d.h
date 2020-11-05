@@ -48,7 +48,6 @@
 namespace cartographer {
 namespace mapping {
 namespace scan_matching {
-
 // An implementation of "Real-Time Correlative Scan Matching" by Olson.
 class RealTimeCorrelativeScanMatcher2D {
  public:

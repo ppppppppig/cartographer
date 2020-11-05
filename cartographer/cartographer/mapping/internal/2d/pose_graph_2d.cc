@@ -35,9 +35,13 @@
 #include "cartographer/sensor/compressed_point_cloud.h"
 #include "cartographer/sensor/internal/voxel_filter.h"
 #include "glog/logging.h"
+#include "cartographer/mapping/internal/2d/scan_matching/my_global.h"
 
 namespace cartographer {
 namespace mapping {
+
+int my_max_constraint_distance = 2;
+bool now_is_border = false;
 
 PoseGraph2D::PoseGraph2D(
     const proto::PoseGraphOptions& options,
@@ -130,6 +134,47 @@ NodeId PoseGraph2D::AddNode(
   // execute the lambda.
     //判断当前submap是否finish，
   const bool newly_finished_submap = insertion_submaps.front()->finished();
+
+  {
+    //一个trigger
+    //通过node.xy坐标和submap.xy坐标匹配，如果node.xy在一定范围内，则
+    //必须在match_full_map之后
+    //应该在全局变量中添加一个now_trajectory_id，通过这样的方式，可以缩小搜索范围
+    //有bug，在全局之前会出现bug，最好做了一次match_full_submap
+    bool my_flag = false;
+    //获取新旧子图索引
+    const std::vector<SubmapId> submap_ids = InitializeGlobalSubmapPoses(
+        node_id.trajectory_id, constant_data->time, insertion_submaps);
+    //以旧图为参考，计算节点的位姿，并将之加入后端优化器
+    CHECK_EQ(submap_ids.size(), insertion_submaps.size());
+    const SubmapId matching_id = submap_ids.front();
+    const transform::Rigid2d local_pose_2d = transform::Project2D(
+        constant_data->local_pose *
+        transform::Rigid3d::Rotation(constant_data->gravity_alignment.inverse()));
+    const transform::Rigid2d global_pose_2d =
+        optimization_problem_->submap_data().at(matching_id).global_pose *
+        constraints::ComputeSubmapPose(*insertion_submaps.front()).inverse() *
+        local_pose_2d;
+
+    for (const auto& submap_id_data : submap_data_) {
+      if (submap_id_data.data.state == SubmapState::kFinished && node_id.trajectory_id != submap_id_data.id.trajectory_id) {
+
+          const transform::Rigid2d initial_relative_pose =
+          optimization_problem_->submap_data().at(submap_id_data.id).global_pose.inverse() *
+            global_pose_2d;
+        if (initial_relative_pose.translation().norm() < my_max_constraint_distance) {
+          my_flag = true;
+          //LOG(ERROR) << global_pose_2d;
+          break;
+        }
+      }
+    }
+    if(!my_flag){
+      now_is_border = true;
+    }
+  }
+
+
   AddWorkItem([=]() REQUIRES(mutex_) {
     //在workqueue中添加任务
     ComputeConstraintsForNode(node_id, insertion_submaps,
@@ -193,6 +238,7 @@ void PoseGraph2D::AddLandmarkData(int trajectory_id,
   });
 }
 
+//与所有的kfinish地图匹配，
 void PoseGraph2D::ComputeConstraint(const NodeId& node_id,
                                     const SubmapId& submap_id) {
   CHECK(submap_data_.at(submap_id).state == SubmapState::kFinished);
@@ -201,6 +247,8 @@ void PoseGraph2D::ComputeConstraint(const NodeId& node_id,
   const common::Time last_connection_time =
       trajectory_connectivity_state_.LastConnectionTime(
           node_id.trajectory_id, submap_id.trajectory_id);
+          //若是不久前跟submap建立了全局链接或同属一个轨道
+          //match_full_submap区别仅仅在于搜索窗口大小设置上面
   if (node_id.trajectory_id == submap_id.trajectory_id ||
       node_time <
           last_connection_time +
@@ -220,7 +268,7 @@ void PoseGraph2D::ComputeConstraint(const NodeId& node_id,
         trajectory_nodes_.at(node_id).constant_data.get(),
         initial_relative_pose);
   } else if (global_localization_samplers_[node_id.trajectory_id]->Pulse()) {
-    constraint_builder_.MaybeAddGlobalConstraint(
+    constraint_builder_.MaybeAddGlobalConstraint(//与maybeaddconstraint区别是没有初始位姿
         submap_id, submap_data_.at(submap_id).submap.get(), node_id,
         trajectory_nodes_.at(node_id).constant_data.get());
   }
@@ -283,7 +331,7 @@ void PoseGraph2D::ComputeConstraintsForNode(
   }
 
 
-//遍历finish的submap，尝试建立约束
+//通过这一段代码，建立约束
   for (const auto& submap_id_data : submap_data_) {
     if (submap_id_data.data.state == SubmapState::kFinished) {
       CHECK_EQ(submap_id_data.data.node_ids.count(node_id), 0);

@@ -34,13 +34,14 @@
 #include "cartographer/sensor/odometry_data.h"
 #include "cartographer/sensor/range_data.h"
 #include "cartographer/transform/rigid_transform.h"
-
+#include "cartographer/mapping/internal/2d/scan_matching/my_global.h"
 namespace cartographer {
 namespace mapping {
 
 // Wires up the local SLAM stack (i.e. pose extrapolator, scan matching, etc.)
 // without loop closure.
 // TODO(gaschler): Add test for this class similar to the 3D test.
+
 class LocalTrajectoryBuilder2D {
  public:
   struct InsertionResult {

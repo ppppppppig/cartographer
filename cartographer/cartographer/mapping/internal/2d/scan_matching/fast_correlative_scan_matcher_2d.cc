@@ -88,6 +88,7 @@ CreateFastCorrelativeScanMatcherOptions2D(
   return options;
 }
 
+//计算格子的预算图
 PrecomputationGrid2D::PrecomputationGrid2D(
     const Grid2D& grid, const CellLimits& limits, const int width,
     std::vector<float>* reusable_intermediate_grid)
@@ -221,7 +222,7 @@ bool FastCorrelativeScanMatcher2D::MatchFullSubmap(
   const SearchParameters search_parameters(
       1e6 * limits_.resolution(),  // Linear search window, 1e6 cells/direction.
       M_PI,  // Angular search window, 180 degrees in both directions.
-      point_cloud, limits_.resolution());
+      point_cloud, limits_.resolution());//描述了搜索窗口和分辨率
   const transform::Rigid2d center = transform::Rigid2d::Translation(
       limits_.max() - 0.5 * limits_.resolution() *
                           Eigen::Vector2d(limits_.cell_limits().num_y_cells,
@@ -287,7 +288,7 @@ FastCorrelativeScanMatcher2D::ComputeLowestResolutionCandidates(
     const SearchParameters& search_parameters) const {
       //生成所有可行解，找出所有候选集
   std::vector<Candidate2D> lowest_resolution_candidates =
-      GenerateLowestResolutionCandidates(search_parameters);
+      GenerateLowestResolutionCandidates(search_parameters);//前面考虑了旋转，现在考虑平移
       //计算每个candidates的得分，从大到小排序，
   ScoreCandidates(
       precomputation_grid_stack_->Get(precomputation_grid_stack_->max_depth()),
@@ -300,10 +301,10 @@ FastCorrelativeScanMatcher2D::GenerateLowestResolutionCandidates(
     const SearchParameters& search_parameters) const {
 
       //根据传入深度计算x和y方向上可能的候选级
-  const int linear_step_size = 1 << precomputation_grid_stack_->max_depth();
+  const int linear_step_size = 1 << precomputation_grid_stack_->max_depth();//得到当前级数
   int num_candidates = 0;
   for (int scan_index = 0; scan_index != search_parameters.num_scans;
-       ++scan_index) {
+       ++scan_index) {//遍历search_parameters中所有帧，search_parameters中保存着什么
     const int num_lowest_resolution_linear_x_candidates =
         (search_parameters.linear_bounds[scan_index].max_x -
          search_parameters.linear_bounds[scan_index].min_x + linear_step_size) /
@@ -353,7 +354,7 @@ void FastCorrelativeScanMatcher2D::ScoreCandidates(
           xy_index.x() + candidate.x_index_offset,
           xy_index.y() + candidate.y_index_offset);
           //得分的和
-      sum += precomputation_grid.GetValue(proposed_xy_index);
+      sum += precomputation_grid.GetValue(proposed_xy_index);//找最近的栅格获得概率
     }
     //计算平均得分
     candidate.score = precomputation_grid.ToScore(

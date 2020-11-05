@@ -226,6 +226,7 @@ void ConstraintBuilder2D::ComputeConstraint(
   // 1. Fast estimate using the fast correlative scan matcher.
   // 2. Prune if the score is too low.
   // 3. Refine.
+  // LOG(ERROR) << score;
   if (match_full_submap) {
     kGlobalConstraintsSearchedMetric->Increment();
     if (submap_scan_matcher.fast_correlative_scan_matcher->MatchFullSubmap(
@@ -234,6 +235,7 @@ void ConstraintBuilder2D::ComputeConstraint(
       CHECK_GT(score, options_.global_localization_min_score());
       CHECK_GE(node_id.trajectory_id, 0);
       CHECK_GE(submap_id.trajectory_id, 0);
+      //LOG(ERROR) << "fullmap";
       kGlobalConstraintsFoundMetric->Increment();
       kGlobalConstraintScoresMetric->Observe(score);
     } else {
@@ -246,16 +248,17 @@ void ConstraintBuilder2D::ComputeConstraint(
             options_.min_score(), &score, &pose_estimate)) {
       // We've reported a successful local match.
       CHECK_GT(score, options_.min_score());
+      //LOG(ERROR) << "map";
       kConstraintsFoundMetric->Increment();
       kConstraintScoresMetric->Observe(score);
     } else {
       return;
     }
   }
-  
   //将新获得的约束得分统计到一个直方图中
   {
     common::MutexLocker locker(&mutex_);
+    // LOG(ERROR) << score;
     score_histogram_.Add(score);
   }
 
