@@ -135,44 +135,44 @@ NodeId PoseGraph2D::AddNode(
     //判断当前submap是否finish，
   const bool newly_finished_submap = insertion_submaps.front()->finished();
 
-  {
-    //一个trigger
-    //通过node.xy坐标和submap.xy坐标匹配，如果node.xy在一定范围内，则
-    //必须在match_full_map之后
-    //应该在全局变量中添加一个now_trajectory_id，通过这样的方式，可以缩小搜索范围
-    //有bug，在全局之前会出现bug，最好做了一次match_full_submap
-    bool my_flag = false;
-    //获取新旧子图索引
-    const std::vector<SubmapId> submap_ids = InitializeGlobalSubmapPoses(
-        node_id.trajectory_id, constant_data->time, insertion_submaps);
-    //以旧图为参考，计算节点的位姿，并将之加入后端优化器
-    CHECK_EQ(submap_ids.size(), insertion_submaps.size());
-    const SubmapId matching_id = submap_ids.front();
-    const transform::Rigid2d local_pose_2d = transform::Project2D(
-        constant_data->local_pose *
-        transform::Rigid3d::Rotation(constant_data->gravity_alignment.inverse()));
-    const transform::Rigid2d global_pose_2d =
-        optimization_problem_->submap_data().at(matching_id).global_pose *
-        constraints::ComputeSubmapPose(*insertion_submaps.front()).inverse() *
-        local_pose_2d;
+  // {
+  //   //一个trigger
+  //   //通过node.xy坐标和submap.xy坐标匹配，如果node.xy在一定范围内，则
+  //   //必须在match_full_map之后
+  //   //应该在全局变量中添加一个now_trajectory_id，通过这样的方式，可以缩小搜索范围
+  //   //有bug，在全局之前会出现bug，最好做了一次match_full_submap
+  //   bool my_flag = false;
+  //   //获取新旧子图索引
+  //   const std::vector<SubmapId> submap_ids = InitializeGlobalSubmapPoses(
+  //       node_id.trajectory_id, constant_data->time, insertion_submaps);
+  //   //以旧图为参考，计算节点的位姿，并将之加入后端优化器
+  //   CHECK_EQ(submap_ids.size(), insertion_submaps.size());
+  //   const SubmapId matching_id = submap_ids.front();
+  //   const transform::Rigid2d local_pose_2d = transform::Project2D(
+  //       constant_data->local_pose *
+  //       transform::Rigid3d::Rotation(constant_data->gravity_alignment.inverse()));
+  //   const transform::Rigid2d global_pose_2d =
+  //       optimization_problem_->submap_data().at(matching_id).global_pose *
+  //       constraints::ComputeSubmapPose(*insertion_submaps.front()).inverse() *
+  //       local_pose_2d;
 
-    for (const auto& submap_id_data : submap_data_) {
-      if (submap_id_data.data.state == SubmapState::kFinished && node_id.trajectory_id != submap_id_data.id.trajectory_id) {
+  //   for (const auto& submap_id_data : submap_data_) {
+  //     if (submap_id_data.data.state == SubmapState::kFinished && node_id.trajectory_id != submap_id_data.id.trajectory_id) {
 
-          const transform::Rigid2d initial_relative_pose =
-          optimization_problem_->submap_data().at(submap_id_data.id).global_pose.inverse() *
-            global_pose_2d;
-        if (initial_relative_pose.translation().norm() < my_max_constraint_distance) {
-          my_flag = true;
-          //LOG(ERROR) << global_pose_2d;
-          break;
-        }
-      }
-    }
-    if(!my_flag){
-      now_is_border = true;
-    }
-  }
+  //         const transform::Rigid2d initial_relative_pose =
+  //         optimization_problem_->submap_data().at(submap_id_data.id).global_pose.inverse() *
+  //           global_pose_2d;
+  //       if (initial_relative_pose.translation().norm() < my_max_constraint_distance) {
+  //         my_flag = true;
+  //         //LOG(ERROR) << global_pose_2d;
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   if(!my_flag){
+  //     now_is_border = true;
+  //   }
+  // }
 
 
   AddWorkItem([=]() REQUIRES(mutex_) {
@@ -327,7 +327,7 @@ void PoseGraph2D::ComputeConstraintsForNode(
                                       {transform::Embed3D(constraint_transform),
                                        options_.matcher_translation_weight(),
                                        options_.matcher_rotation_weight()},
-                                      Constraint::INTRA_SUBMAP});
+                                      Constraint::INTRA_SUBMAP});//一个约束入口
   }
 
 
@@ -335,7 +335,7 @@ void PoseGraph2D::ComputeConstraintsForNode(
   for (const auto& submap_id_data : submap_data_) {
     if (submap_id_data.data.state == SubmapState::kFinished) {
       CHECK_EQ(submap_id_data.data.node_ids.count(node_id), 0);
-      ComputeConstraint(node_id, submap_id_data.id);
+      ComputeConstraint(node_id, submap_id_data.id);//第二个
     }
   }
 
@@ -400,10 +400,10 @@ void PoseGraph2D::HandleWorkQueue(
     const constraints::ConstraintBuilder2D::Result& result) {
   {
     common::MutexLocker locker(&mutex_);
-    constraints_.insert(constraints_.end(), result.begin(), result.end());
+    constraints_.insert(constraints_.end(), result.begin(), result.end());//3
   }
   RunOptimization();
-  LOG(ERROR) << "first runoptimization";
+  //LOG(ERROR) << "first runoptimization";
   if (global_slam_optimization_callback_) {
 
     std::map<int, NodeId> trajectory_id_to_last_optimized_node_id;
@@ -549,6 +549,17 @@ void PoseGraph2D::AddSubmapFromProto(
   });
 }
 
+  //my add
+bool PoseGraph2D::ClearSubmapPose(int trajectory_id){
+  return false;
+}
+bool PoseGraph2D::ClearNodePose(int trajectory_id){
+  return false;
+}
+bool PoseGraph2D::ClearConstraint(int trajectory_id){
+  return false;
+}
+
 void PoseGraph2D::AddNodeFromProto(const transform::Rigid3d& global_pose,
                                    const proto::Node& node) {
   const NodeId node_id = {node.node_id().trajectory_id(),
@@ -588,6 +599,7 @@ void PoseGraph2D::AddNodeToSubmap(const NodeId& node_id,
   });
 }
 
+//可能是从pbstream中读取的约束
 void PoseGraph2D::AddSerializedConstraints(
     const std::vector<Constraint>& constraints) {
   common::MutexLocker locker(&mutex_);

@@ -111,6 +111,8 @@ Node::Node(
       kFinishTrajectoryServiceName, &Node::HandleFinishTrajectory, this));
   service_servers_.push_back(node_handle_.advertiseService(
       kWriteStateServiceName, &Node::HandleWriteState, this));
+  service_servers_.push_back(node_handle_.advertiseService(
+      kReloadTrajectoryServiceName, &Node::HandleReloadTrajectory, this));
 
   scan_matched_point_cloud_publisher_ =
       node_handle_.advertise<sensor_msgs::PointCloud2>(
@@ -562,6 +564,14 @@ bool Node::HandleFinishTrajectory(
     ::cartographer_ros_msgs::FinishTrajectory::Request& request,
     ::cartographer_ros_msgs::FinishTrajectory::Response& response) {
   carto::common::MutexLocker lock(&mutex_);
+  response.status = FinishTrajectoryUnderLock(request.trajectory_id);
+  return true;
+}
+
+bool Node::HandleReloadTrajectory(
+    ::cartographer_ros_msgs::FinishTrajectory::Request& request,
+    ::cartographer_ros_msgs::FinishTrajectory::Response& response){
+  carto::common::MutexLocker lock(&mutex_);//保证每次只能进行一种服务
   response.status = FinishTrajectoryUnderLock(request.trajectory_id);
   return true;
 }

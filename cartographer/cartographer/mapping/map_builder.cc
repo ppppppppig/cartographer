@@ -209,6 +209,7 @@ void MapBuilder::SerializeState(io::ProtoStreamWriterInterface* const writer) {
 
 void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
                            bool load_frozen_state) {
+  //自带的pbstream里面只有nodePose和submapPose
   io::ProtoStreamDeserializer deserializer(reader);
 
   // Create a copy of the pose_graph_proto, such that we can re-write the
@@ -232,8 +233,9 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
     if (load_frozen_state) {
       pose_graph_->FreezeTrajectory(new_trajectory_id);
     }
+    //LOG(ERROR) << new_trajectory_id;
   }
-
+ // LOG(ERROR) << "have done";
   // Apply the calculated remapping to constraints in the pose graph proto.
   for (auto& constraint_proto : *pose_graph_proto.mutable_constraint()) {
     constraint_proto.mutable_submap_id()->set_trajectory_id(
@@ -242,6 +244,7 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
         trajectory_remapping.at(constraint_proto.node_id().trajectory_id()));
   }
 
+//装入submap_poses和node_poses中，还有landmark的数据也装入容器中，在后面的switch中，将数据清除
   MapById<SubmapId, transform::Rigid3d> submap_poses;
   for (const proto::Trajectory& trajectory_proto :
        pose_graph_proto.trajectory()) {
@@ -252,7 +255,6 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
                           transform::ToRigid3(submap_proto.pose()));
     }
   }
-
   MapById<NodeId, transform::Rigid3d> node_poses;
   for (const proto::Trajectory& trajectory_proto :
        pose_graph_proto.trajectory()) {
@@ -262,12 +264,13 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
           transform::ToRigid3(node_proto.pose()));
     }
   }
-
   // Set global poses of landmarks.
   for (const auto& landmark : pose_graph_proto.landmark_poses()) {
+    //LOG(ERROR) << "setlandmarkpose";
     pose_graph_->SetLandmarkPose(landmark.landmark_id(),
                                  transform::ToRigid3(landmark.global_pose()));
   }
+
 
   SerializedData proto;
   while (deserializer.ReadNextSerializedData(&proto)) {
@@ -288,6 +291,7 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
         const transform::Rigid3d& submap_pose = submap_poses.at(
             SubmapId{proto.submap().submap_id().trajectory_id(),
                      proto.submap().submap_id().submap_index()});
+                     //LOG(ERROR) << "submappose";
         pose_graph_->AddSubmapFromProto(submap_pose, proto.submap());
         break;
       }
@@ -297,17 +301,20 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
         const transform::Rigid3d& node_pose =
             node_poses.at(NodeId{proto.node().node_id().trajectory_id(),
                                  proto.node().node_id().node_index()});
+                                 //LOG(ERROR) << "nodepose";y
         pose_graph_->AddNodeFromProto(node_pose, proto.node());
         break;
       }
       case SerializedData::kTrajectoryData: {
         proto.mutable_trajectory_data()->set_trajectory_id(
             trajectory_remapping.at(proto.trajectory_data().trajectory_id()));
+            //LOG(ERROR) << "trajectorydata";
         pose_graph_->SetTrajectoryDataFromProto(proto.trajectory_data());
         break;
       }
       case SerializedData::kImuData: {
         if (load_frozen_state) break;
+        //LOG(ERROR) << "imudata";
         pose_graph_->AddImuData(
             trajectory_remapping.at(proto.imu_data().trajectory_id()),
             sensor::FromProto(proto.imu_data().imu_data()));
@@ -315,6 +322,7 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
       }
       case SerializedData::kOdometryData: {
         if (load_frozen_state) break;
+        //LOG(ERROR) << "kodometrydata";
         pose_graph_->AddOdometryData(
             trajectory_remapping.at(proto.odometry_data().trajectory_id()),
             sensor::FromProto(proto.odometry_data().odometry_data()));
@@ -331,6 +339,7 @@ void MapBuilder::LoadState(io::ProtoStreamReaderInterface* const reader,
       }
       case SerializedData::kLandmarkData: {
         if (load_frozen_state) break;
+        //LOG(ERROR) << "klandmarkdata";
         pose_graph_->AddLandmarkData(
             trajectory_remapping.at(proto.landmark_data().trajectory_id()),
             sensor::FromProto(proto.landmark_data().landmark_data()));

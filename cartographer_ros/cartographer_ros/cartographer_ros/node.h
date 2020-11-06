@@ -136,6 +136,11 @@ class Node {
   bool HandleFinishTrajectory(
       cartographer_ros_msgs::FinishTrajectory::Request& request,
       cartographer_ros_msgs::FinishTrajectory::Response& response);
+
+    //my add
+  bool HandleReloadTrajectory(
+      cartographer_ros_msgs::FinishTrajectory::Request& request,
+      cartographer_ros_msgs::FinishTrajectory::Response& response);    
   bool HandleWriteState(cartographer_ros_msgs::WriteState::Request& request,
                         cartographer_ros_msgs::WriteState::Response& response);
   // Returns the set of SensorIds expected for a trajectory.

@@ -86,10 +86,23 @@ class PoseGraph : public PoseGraphInterface {
   virtual void AddSubmapFromProto(const transform::Rigid3d& global_pose,
                                   const proto::Submap& submap) = 0;
 
+//my add
+  virtual bool ClearSubmapPose(int trajectory_id){
+      return false;
+  }
+  virtual bool ClearNodePose(int trajectory_id){
+      return false;
+  }
+  virtual bool ClearConstraint(int trajectory_id){
+      return false;
+  }
+
+
   // Adds a 'node' from a proto with the given 'global_pose' to the
   // appropriate trajectory.
   virtual void AddNodeFromProto(const transform::Rigid3d& global_pose,
                                 const proto::Node& node) = 0;
+
 
   // Sets the trajectory data from a proto.
   virtual void SetTrajectoryDataFromProto(

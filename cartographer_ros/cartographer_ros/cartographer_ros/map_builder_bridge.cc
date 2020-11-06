@@ -107,6 +107,7 @@ MapBuilderBridge::MapBuilderBridge(
 
 void MapBuilderBridge::LoadState(const std::string& state_filename,
                                  bool load_frozen_state) {
+  //只从pbstream中获取数据
   // Check if suffix of the state file is ".pbstream".
   const std::string suffix = ".pbstream";
   CHECK_EQ(state_filename.substr(

@@ -110,6 +110,13 @@ class PoseGraph2D : public PoseGraph {
   std::vector<std::vector<int>> GetConnectedTrajectories() const override;
   PoseGraphInterface::SubmapData GetSubmapData(const SubmapId& submap_id) const
       EXCLUDES(mutex_) override;
+
+  //my add
+  virtual bool ClearSubmapPose(int trajectory_id) override EXCLUDES(mutex_);
+  virtual bool ClearNodePose(int trajectory_id) override EXCLUDES(mutex_);//一个宏定义
+  virtual bool ClearConstraint(int trajectory_id) override EXCLUDES(mutex_);
+
+
   MapById<SubmapId, PoseGraphInterface::SubmapData> GetAllSubmapData() const
       EXCLUDES(mutex_) override;
   MapById<SubmapId, SubmapPose> GetAllSubmapPoses() const

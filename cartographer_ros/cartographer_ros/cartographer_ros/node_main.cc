@@ -56,7 +56,7 @@ void Run() {
       cartographer::common::make_unique<cartographer::mapping::MapBuilder>(
           node_options.map_builder_options);//载入map_builder参数
   Node node(node_options, std::move(map_builder), &tf_buffer);//通过node_options等参数初始化node
-  if (!FLAGS_load_state_filename.empty()) {
+  if (!FLAGS_load_state_filename.empty()) { 
     node.LoadState(FLAGS_load_state_filename, FLAGS_load_frozen_state);//载入初始化地图
   }
 

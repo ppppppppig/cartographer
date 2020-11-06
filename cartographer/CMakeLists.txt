@@ -14,17 +14,17 @@
 
 cmake_minimum_required(VERSION 2.8.12)  # Ships with Ubuntu 14.04 (Trusty)
 
-project(cartographer)
+project(cartographer) #引入两个变量：cartographer_BINARY_DIR和cartographer_SOURCE_DIR
 
-set(CARTOGRAPHER_MAJOR_VERSION 1)
+set(CARTOGRAPHER_MAJOR_VERSION 1) #设置变量的值
 set(CARTOGRAPHER_MINOR_VERSION 0)
 set(CARTOGRAPHER_PATCH_VERSION 0)
 set(CARTOGRAPHER_VERSION ${CARTOGRAPHER_MAJOR_VERSION}.${CARTOGRAPHER_MINOR_VERSION}.${CARTOGRAPHER_PATCH_VERSION})
 set(CARTOGRAPHER_SOVERSION ${CARTOGRAPHER_MAJOR_VERSION}.${CARTOGRAPHER_MINOR_VERSION})
-option(BUILD_GRPC "build Cartographer gRPC support" false)
+option(BUILD_GRPC "build Cartographer gRPC support" false)  #option用来定义宏
 option(BUILD_PROMETHEUS "build Prometheus monitoring support" false)
 
-include("${PROJECT_SOURCE_DIR}/cmake/functions.cmake")
+include("${PROJECT_SOURCE_DIR}/cmake/functions.cmake")#在cmake中定义了一个函数，用include包含进来
 google_initialize_cartographer_project()
 google_enable_testing()
 

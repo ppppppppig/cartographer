@@ -47,6 +47,7 @@ SearchParameters::SearchParameters(const double linear_search_window,
   const int num_linear_perturbations =
       std::ceil(linear_search_window / resolution);
   linear_bounds.reserve(num_scans);
+  //窗口上下界
   for (int i = 0; i != num_scans; ++i) {
     linear_bounds.push_back(
         LinearBounds{-num_linear_perturbations, num_linear_perturbations,
