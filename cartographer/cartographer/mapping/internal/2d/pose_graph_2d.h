@@ -204,7 +204,7 @@ class PoseGraph2D : public PoseGraph {
 
   // Waits until we caught up (i.e. nothing is waiting to be scheduled), and
   // all computations have finished.
-  void WaitForAllComputations() EXCLUDES(mutex_);
+  void WaitForAllComputations() EXCLUDES(mutex_);//改变变量前必须先锁住
 
   // Runs the optimization. Callers have to make sure, that there is only one
   // optimization being run at a time.

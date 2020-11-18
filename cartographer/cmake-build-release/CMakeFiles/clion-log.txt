@@ -1,0 +1,979 @@
+/home/ethan/Desktop/clion-2019.2.5/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - Unix Makefiles" /home/ethan/glx/cartographer/src/cartographer
+-- Build type: Release
+-- Found installed version of Eigen: /usr/lib/cmake/eigen3
+-- Found required Ceres dependency: Eigen version 3.2.92 in /usr/include/eigen3
+-- Found required Ceres dependency: glog
+-- Found required Ceres dependency: gflags
+-- Found Ceres version: 2.0.0 installed in: /usr/local with components: [EigenSparse, SparseLinearAlgebraLibrary, LAPACK, SuiteSparse, CXSparse, SchurSpecializations, OpenMP, Multithreading]
+-- Configuring done
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.pose_graph_2d_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.point_cloud_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.3d.submap_3d_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.2d.xy_index_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.2d.submap_2d_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.constraints.constraint_builder_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.proto_stream_deserializer_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.imu_tracker_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.3d.hybrid_grid_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.trajectory_node_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.lua_parameter_dictionary_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.proto_stream_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.2d.probability_grid_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.real_time_correlative_scan_matcher_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.overlapping_submaps_trimmer_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.math_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:50 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer_migrate_serialization_format because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:182 (google_binary)
+
+
+CMake Warning at cmake/functions.cmake:50 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer_autogenerate_ground_truth because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:172 (google_binary)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.optimization.optimization_problem_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.internal.in_memory_proto_stream_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.internal.voxel_filter_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.scan_matching.correlative_scan_matcher_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.blocking_queue_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.trajectory_connectivity_state_test because
+  files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.lockless_queue_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.fixed_ratio_sampler_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.id_test because files in some directories may conflict
+  with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.rotation_delta_cost_functor_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.configuration_files_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.serialization_format_migration_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.internal.ordered_multi_queue_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.optional_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.local_trajectory_builder_3d_test because
+  files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.connected_components_test because files in
+  some directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.thread_pool_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.2d.range_data_inserter_2d_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.task_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.3d.range_data_inserter_3d_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.scan_matching.fast_correlative_scan_matcher_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.ceres_scan_matcher_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.scan_matching.ceres_scan_matcher_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.pose_graph_3d_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.fast_correlative_scan_matcher_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.map_builder_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.common.rate_timer_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.precomputation_grid_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.rotational_scan_matcher_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.range_data_collator_test because files in
+  some directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.motion_filter_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.probability_values_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.constraints.constraint_builder_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.optimization.cost_functions.landmark_cost_function_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.fake_file_writer_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.optimization.cost_functions.landmark_cost_function_3d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.optimization.cost_functions.spa_cost_function_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.pose_graph_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.pose_extrapolator_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.io.points_processor_pipeline_builder_test because files in
+  some directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.pose_graph_trimmer_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.submaps_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.compressed_point_cloud_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:50 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer_compute_relations_metrics because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:177 (google_binary)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.internal.collator_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.internal.trajectory_collator_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.2d.map_limits_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.2d.scan_matching.real_time_correlative_scan_matcher_2d_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.landmark_data_test because files in some directories
+  may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.transform.transform_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.map_by_time_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.mapping.internal.3d.scan_matching.interpolated_grid_test
+  because files in some directories may conflict with libraries in implicit
+  directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.sensor.range_data_test because files in some directories may
+  conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.transform.rigid_transform_test because files in some
+  directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+CMake Warning at cmake/functions.cmake:36 (add_executable):
+  Cannot generate a safe runtime search path for target
+  cartographer.transform.transform_interpolation_buffer_test because files in
+  some directories may conflict with libraries in implicit directories:
+
+    runtime library [libglog.so.0] in /usr/lib/x86_64-linux-gnu may be hidden by files in:
+      /usr/local/lib
+
+  Some of these libraries may not be found correctly.
+Call Stack (most recent call first):
+  CMakeLists.txt:258 (google_test)
+
+
+-- Generating done
+-- Build files have been written to: /home/ethan/glx/cartographer/src/cartographer/cmake-build-release

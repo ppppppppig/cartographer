@@ -1,6 +1,6 @@
-#include "cartographer/cloud/map_builder_server_interface.h"
+#include "cartographer/cloud/_server_interface.h"
 
-#include "cartographer/cloud/internal/map_builder_server.h"
+#include "cartographer/cloud/internal/_server.h"
 #include "cartographer/common/make_unique.h"
 
 namespace cartographer {
@@ -11,10 +11,10 @@ void RegisterMapBuilderServerMetrics(metrics::FamilyFactory* factory) {
 }
 
 std::unique_ptr<MapBuilderServerInterface> CreateMapBuilderServer(
-    const proto::MapBuilderServerOptions& map_builder_server_options,
-    std::unique_ptr<mapping::MapBuilderInterface> map_builder) {
-  return common::make_unique<MapBuilderServer>(map_builder_server_options,
-                                               std::move(map_builder));
+    const proto::MapBuilderServerOptions& _server_options,
+    std::unique_ptr<mapping::MapBuilderInterface> ) {
+  return common::make_unique<MapBuilderServer>(_server_options,
+                                               std::move());
 }
 
 }  // namespace cloud

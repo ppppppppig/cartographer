@@ -74,10 +74,13 @@ class Node {
 
   // Starts the first trajectory with the default topics.
   void StartTrajectoryWithDefaultTopics(const TrajectoryOptions& options);
-
+  void StartTrajectoryWithDefaultTopicsUnderLock(const TrajectoryOptions& options);
   // Returns unique SensorIds for multiple input bag files based on
   // their TrajectoryOptions.
   // 'SensorId::id' is the expected ROS topic name.
+
+  bool ClearSubmapAndNode();
+
   std::vector<
       std::set<::cartographer::mapping::TrajectoryBuilderInterface::SensorId>>
   ComputeDefaultSensorIdsForMultipleBags(
@@ -114,6 +117,7 @@ class Node {
   // Loads a serialized SLAM state from a .pbstream file.
   void LoadState(const std::string& state_filename, bool load_frozen_state);
 
+  void LoadStateunderlock(const std::string& state_filename, bool load_frozen_state);
   ::ros::NodeHandle* node_handle();
 
  private:
@@ -141,6 +145,8 @@ class Node {
   bool HandleReloadTrajectory(
       cartographer_ros_msgs::FinishTrajectory::Request& request,
       cartographer_ros_msgs::FinishTrajectory::Response& response);    
+
+      
   bool HandleWriteState(cartographer_ros_msgs::WriteState::Request& request,
                         cartographer_ros_msgs::WriteState::Response& response);
   // Returns the set of SensorIds expected for a trajectory.

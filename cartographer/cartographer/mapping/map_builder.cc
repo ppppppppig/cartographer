@@ -95,6 +95,24 @@ MapBuilder::MapBuilder(const proto::MapBuilderOptions& options)
   }
 }
 
+bool MapBuilder::ClearSubmapAndNode(){
+  pose_graph_.reset();
+  if (options_.use_trajectory_builder_2d()) {
+    //清除当前轨迹全部数据
+    pose_graph_ = common::make_unique<PoseGraph2D>(
+        options_.pose_graph_options(),
+        common::make_unique<optimization::OptimizationProblem2D>(
+            options_.pose_graph_options().optimization_problem_options()),
+        &thread_pool_);
+    return true;
+  }
+  else{
+    LOG(ERROR) << "only load 2d";
+    return false;
+  }
+  return true;
+}
+
 int MapBuilder::AddTrajectoryBuilder(
     const std::set<SensorId>& expected_sensor_ids,
     const proto::TrajectoryBuilderOptions& trajectory_options,

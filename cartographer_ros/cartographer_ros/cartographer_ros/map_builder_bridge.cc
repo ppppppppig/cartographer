@@ -117,6 +117,7 @@ void MapBuilderBridge::LoadState(const std::string& state_filename,
          ".pbstream file.";
   LOG(INFO) << "Loading saved state '" << state_filename << "'...";
   cartographer::io::ProtoStreamReader stream(state_filename);
+  LOG(ERROR) << "map_builder::LOADSTATE";
   map_builder_->LoadState(&stream, load_frozen_state);
 }
 
@@ -146,11 +147,20 @@ int MapBuilderBridge::AddTrajectory(
   return trajectory_id;
 }
 
+bool MapBuilderBridge::ClearSubmapAndNode(){
+  if(!map_builder_->ClearSubmapAndNode()){
+    return false;
+  }
+  return true;
+}
+
+//把trajectory_id从sensor_bridges中消除
 void MapBuilderBridge::FinishTrajectory(const int trajectory_id) {
   LOG(INFO) << "Finishing trajectory with ID '" << trajectory_id << "'...";
 
   // Make sure there is a trajectory with 'trajectory_id'.
   CHECK_EQ(sensor_bridges_.count(trajectory_id), 1);
+  //map_builder会被销毁吗
   map_builder_->FinishTrajectory(trajectory_id);
   sensor_bridges_.erase(trajectory_id);
 }

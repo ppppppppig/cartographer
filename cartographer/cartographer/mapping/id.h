@@ -140,13 +140,14 @@ class MapById {
 
   class ConstIterator {
    public:
+      //迭代器萃取
     using iterator_category = std::bidirectional_iterator_tag;
     using value_type = IdDataReference;
     using difference_type = int64;
     using pointer = std::unique_ptr<const IdDataReference>;
     using reference = const IdDataReference&;
 
-    explicit ConstIterator(const MapById& map_by_id, const int trajectory_id)
+    explicit ConstIterator(const MapById& map_by_id, const int trajectory_id)//用explicit修饰，不能进行隐式类型转换
         : current_trajectory_(
               map_by_id.trajectories_.lower_bound(trajectory_id)),
           end_trajectory_(map_by_id.trajectories_.end()) {
@@ -222,7 +223,7 @@ class MapById {
     typename std::map<int, MapByIndex>::const_iterator current_trajectory_;
     typename std::map<int, MapByIndex>::const_iterator end_trajectory_;
     typename std::map<int, DataType>::const_iterator current_data_;
-  };
+  };//迭代器
 
   class ConstTrajectoryIterator {
    public:
@@ -258,7 +259,7 @@ class MapById {
 
    private:
     typename std::map<int, MapByIndex>::const_iterator current_trajectory_;
-  };
+  };//迭代器
 
   // Appends data to a 'trajectory_id', creating trajectories as needed.
   IdType Append(const int trajectory_id, const DataType& data) {
@@ -292,10 +293,10 @@ class MapById {
     const auto it = trajectory.data_.find(GetIndex(id));
     CHECK(it != trajectory.data_.end());
     if (std::next(it) == trajectory.data_.end()) {
-      // We are removing the data with the highest index from this trajectory.
-      // We assume that we will never append to it anymore. If we did, we would
-      // have to make sure that gaps in indices are properly chosen to maintain
-      // correct connectivity.
+    //   // We are removing the data with the highest index from this trajectory.
+    //   // We assume that we will never append to it anymore. If we did, we would
+    //   // have to make sure that gaps in indices are properly chosen to maintain
+    //   // correct connectivity.
       trajectory.can_append_ = false;
     }
     trajectory.data_.erase(it);

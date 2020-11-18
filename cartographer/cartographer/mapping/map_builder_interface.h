@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef CARTOGRAPHER_MAPPING_MAP_BUILDER_INTERFACE_H_
-#define CARTOGRAPHER_MAPPING_MAP_BUILDER_INTERFACE_H_
+#ifndef CARTOGRAPHER_MAPPING_DER_INTERFACE_H_
+#define CARTOGRAPHER_MAPPING_DER_INTERFACE_H_
 
 #include <set>
 #include <string>
@@ -83,7 +83,10 @@ class MapBuilderInterface {
   // Loads the SLAM state from a proto stream.
   virtual void LoadState(io::ProtoStreamReaderInterface* reader,
                          bool load_frozen_state) = 0;
-
+  
+  virtual bool ClearSubmapAndNode(){
+      return false;
+  }
   virtual int num_trajectory_builders() const = 0;
 
   virtual mapping::PoseGraphInterface* pose_graph() = 0;
@@ -95,4 +98,4 @@ class MapBuilderInterface {
 }  // namespace mapping
 }  // namespace cartographer
 
-#endif  // CARTOGRAPHER_MAPPING_MAP_BUILDER_INTERFACE_H_
+#endif  // CARTOGRAPHER_MAPPING_DER_INTERFACE_H_

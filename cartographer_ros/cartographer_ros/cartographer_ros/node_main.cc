@@ -52,6 +52,7 @@ void Run() {
   std::tie(node_options, trajectory_options) =
       LoadOptions(FLAGS_configuration_directory, FLAGS_configuration_basename);
 //将node_options和trajectory_options载入
+  LOG(INFO) << FLAGS_configuration_directory << " " << FLAGS_configuration_basename;
   auto map_builder =
       cartographer::common::make_unique<cartographer::mapping::MapBuilder>(
           node_options.map_builder_options);//载入map_builder参数

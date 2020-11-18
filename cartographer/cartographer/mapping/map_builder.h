@@ -53,6 +53,8 @@ class MapBuilder : public MapBuilderInterface {
 
   void FinishTrajectory(int trajectory_id) override;
 
+  bool ClearSubmapAndNode() override;
+  
   std::string SubmapToProto(const SubmapId &submap_id,
                             proto::SubmapQuery::Response *response) override;
 

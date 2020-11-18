@@ -487,6 +487,7 @@ cartographer_ros_msgs::StatusResponse Node::FinishTrajectoryUnderLock(
   }
   CHECK_EQ(subscribers_.erase(trajectory_id), 1);
   CHECK(is_active_trajectory_.at(trajectory_id));
+  //map_builder_bridge_是否已经被销毁了，估计不会销毁
   map_builder_bridge_.FinishTrajectory(trajectory_id);
   is_active_trajectory_[trajectory_id] = false;
   const std::string message =
@@ -522,6 +523,11 @@ bool Node::HandleStartTrajectory(
 
 void Node::StartTrajectoryWithDefaultTopics(const TrajectoryOptions& options) {
   carto::common::MutexLocker lock(&mutex_);
+  CHECK(ValidateTrajectoryOptions(options));
+  AddTrajectory(options, DefaultSensorTopics());
+}
+
+void Node::StartTrajectoryWithDefaultTopicsUnderLock(const TrajectoryOptions& options){
   CHECK(ValidateTrajectoryOptions(options));
   AddTrajectory(options, DefaultSensorTopics());
 }
@@ -568,11 +574,29 @@ bool Node::HandleFinishTrajectory(
   return true;
 }
 
+bool Node::ClearSubmapAndNode(){
+  if(map_builder_bridge_.ClearSubmapAndNode()){
+    return true;
+  }
+  return false;
+}
+
 bool Node::HandleReloadTrajectory(
     ::cartographer_ros_msgs::FinishTrajectory::Request& request,
     ::cartographer_ros_msgs::FinishTrajectory::Response& response){
   carto::common::MutexLocker lock(&mutex_);//保证每次只能进行一种服务
   response.status = FinishTrajectoryUnderLock(request.trajectory_id);
+  //定义一个函数，清除pose_graph_中的submap_pose和
+  ClearSubmapAndNode();
+  NodeOptions node_options;
+  TrajectoryOptions trajectory_options;
+  const std::string _configuration = "/home/ethan/glx/cartographer/install_isolated/share/cartographer_ros/configuration_files";
+  const std::string _basename = "backpack_2d_localization.lua";
+  std::tie(node_options, trajectory_options) =
+    LoadOptions(_configuration, _basename);
+  LoadStateunderlock("/home/ethan/Downloads/b2-2016-04-05-14-44-52.bag.pbstream", 1);//载入
+  StartTrajectoryWithDefaultTopicsUnderLock(trajectory_options);
+
   return true;
 }
 
@@ -712,7 +736,15 @@ void Node::SerializeState(const std::string& filename) {
 
 void Node::LoadState(const std::string& state_filename,
                      const bool load_frozen_state) {
+  LOG(ERROR) << "node::loadstate";
   carto::common::MutexLocker lock(&mutex_);
+  LOG(ERROR) << "node::loadstate..2";
+  map_builder_bridge_.LoadState(state_filename, load_frozen_state);
+}
+
+void Node::LoadStateunderlock(const std::string& state_filename,
+                     const bool load_frozen_state) {
+  LOG(ERROR) << "node::loadstate";
   map_builder_bridge_.LoadState(state_filename, load_frozen_state);
 }
 

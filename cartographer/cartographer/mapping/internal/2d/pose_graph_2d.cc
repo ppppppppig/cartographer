@@ -66,6 +66,7 @@ std::vector<SubmapId> PoseGraph2D::InitializeGlobalSubmapPoses(
     // If we don't already have an entry for the first submap, add one.
     if (submap_data.SizeOfTrajectoryOrZero(trajectory_id) == 0) {
       if (initial_trajectory_poses_.count(trajectory_id) > 0) {
+        LOG(ERROR) << "can in";
         trajectory_connectivity_state_.Connect(
             trajectory_id,
             initial_trajectory_poses_.at(trajectory_id).to_trajectory_id, time);
@@ -393,6 +394,7 @@ void PoseGraph2D::UpdateTrajectoryConnectivity(const Constraint& constraint) {
   trajectory_connectivity_state_.Connect(constraint.node_id.trajectory_id,
                                          constraint.submap_id.trajectory_id,
                                          time);
+  //LOG(ERROR) << trajectory_connectivity_state_.Components().size();
 }
 
 //以约束构建的结果为输入
@@ -551,11 +553,35 @@ void PoseGraph2D::AddSubmapFromProto(
 
   //my add
 bool PoseGraph2D::ClearSubmapPose(int trajectory_id){
-  return false;
+  //清除对应frozen_trajectory的submap数据
+  common::MutexLocker locker(&mutex_);
+  //为活动轨道，不能清除其数据
+  if(frozen_trajectories_.find(trajectory_id) == frozen_trajectories_.end()){
+    return false;
+  }
+  for(const auto& val:submap_data_){
+    if(val.id.trajectory_id == trajectory_id){
+      submap_data_.Trim(val.id);
+    }
+  }
+  return true;
 }
+
+
 bool PoseGraph2D::ClearNodePose(int trajectory_id){
-  return false;
+  common::MutexLocker locker(&mutex_);
+  if(frozen_trajectories_.find(trajectory_id) == frozen_trajectories_.end()){
+    return false;
+  }
+  for(const auto& val:trajectory_nodes_){
+    if(val.id.trajectory_id == trajectory_id){
+      trajectory_nodes_.Trim(val.id);
+    }
+  }
+  //仍需清理optimization内的数据
+  return true;
 }
+
 bool PoseGraph2D::ClearConstraint(int trajectory_id){
   return false;
 }
@@ -571,7 +597,7 @@ void PoseGraph2D::AddNodeFromProto(const transform::Rigid3d& global_pose,
   AddTrajectoryIfNeeded(node_id.trajectory_id);
   trajectory_nodes_.Insert(node_id, TrajectoryNode{constant_data, global_pose});
 
-  AddWorkItem([this, node_id, global_pose]() REQUIRES(mutex_) {
+  AddWorkItem([this, node_id, global_pose]() REQUIRES(mutex_) {//REQUIRES声明表示在运行函数之前必须先锁住mutex_
     const auto& constant_data = trajectory_nodes_.at(node_id).constant_data;
     const auto gravity_alignment_inverse = transform::Rigid3d::Rotation(
         constant_data->gravity_alignment.inverse());
@@ -670,6 +696,7 @@ void PoseGraph2D::RunOptimization() {
   // time consuming, so not taking the mutex before Solve to avoid blocking
   // foreground processing.
   //进行求解
+  // LOG(ERROR) << "landmark_nodes_" << landmark_nodes_.empty();未使用landmark
   optimization_problem_->Solve(constraints_, frozen_trajectories_,
                                landmark_nodes_);
   common::MutexLocker locker(&mutex_);
@@ -708,6 +735,7 @@ void PoseGraph2D::RunOptimization() {
     }
   }
   for (const auto& landmark : optimization_problem_->landmark_data()) {
+    //spa优化后的landmark_nodes_坐标
     landmark_nodes_[landmark.first].global_landmark_pose = landmark.second;
   }
   global_submap_poses_ = submap_data;
@@ -869,6 +897,7 @@ PoseGraph2D::GetAllSubmapPoses() const {
 transform::Rigid3d PoseGraph2D::ComputeLocalToGlobalTransform(
     const MapById<SubmapId, optimization::SubmapSpec2D>& global_submap_poses,
     const int trajectory_id) const {
+  //LOG(ERROR) << global_submap_poses.size();
   auto begin_it = global_submap_poses.BeginOfTrajectory(trajectory_id);
   auto end_it = global_submap_poses.EndOfTrajectory(trajectory_id);
   if (begin_it == end_it) {
